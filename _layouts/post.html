@@ -1,0 +1,56 @@
+---
+layout: default
+---
+<article class="post">
+  <header class="post-header">
+    <div class="post-meta">
+      <time datetime="{{ page.date | date_to_xmlschema }}">{{ page.date | date: "%B %-d, %Y" }}</time>
+      {% if page.wordle_number %}<span class="wordle-number">Wordle #{{ page.wordle_number }}</span>{% endif %}
+    </div>
+    <h1 class="post-title">{{ page.title }}</h1>
+    {% if page.solved %}
+      <div class="result-badge result-solved">Solved in {{ page.guesses }}/6 🎉</div>
+    {% else %}
+      <div class="result-badge result-failed">Failed 😔</div>
+    {% endif %}
+  </header>
+
+  {% if page.grid %}
+  <div class="wordle-grid">
+    {% for row in page.grid %}
+    <div class="wordle-row">
+      {% assign cells = row | split: "" %}
+      {% for cell in cells %}
+        {% assign parts = cell | split: ":" %}
+        {% if parts[1] == "g" %}
+          <div class="tile green">{{ parts[0] }}</div>
+        {% elsif parts[1] == "y" %}
+          <div class="tile yellow">{{ parts[0] }}</div>
+        {% else %}
+          <div class="tile gray">{{ parts[0] }}</div>
+        {% endif %}
+      {% endfor %}
+    </div>
+    {% endfor %}
+  </div>
+  {% endif %}
+
+  {% if page.share_text %}
+  <div class="share-block">
+    <pre>{{ page.share_text }}</pre>
+  </div>
+  {% endif %}
+
+  <div class="post-content">
+    {{ content }}
+  </div>
+
+  <nav class="post-nav">
+    {% if page.previous.url %}
+      <a href="{{ page.previous.url | relative_url }}" class="prev">← {{ page.previous.title }}</a>
+    {% endif %}
+    {% if page.next.url %}
+      <a href="{{ page.next.url | relative_url }}" class="next">{{ page.next.title }} →</a>
+    {% endif %}
+  </nav>
+</article>
