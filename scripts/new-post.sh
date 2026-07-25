@@ -68,3 +68,10 @@ if [ "$COUNT" -ne 5 ]; then
 fi
 
 echo "OK: ${FILEPATH}"
+
+# Commit and push
+cd "$BLOG_DIR"
+git add "$FILENAME"
+git commit -m "feat: Wordle #${PUZZLE_NUM} ${ANSWER} (${SCORE})"
+git push
+echo "PUBLISHED: ${FILEPATH}"
